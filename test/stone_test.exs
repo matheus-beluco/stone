@@ -12,10 +12,10 @@ defmodule StoneTest do
       emails = ["john@email.com", "lee@email.com", "helena@email.com", "marcos@email.com"]
 
       expected_response = %{
-        "john@email.com": 65.500,
-        "lee@email.com": 65.500,
-        "helena@email.com": 65.500,
-        "marcos@email.com": 65.500
+        "john@email.com" => 65500,
+        "lee@email.com" => 65500,
+        "helena@email.com" => 65500,
+        "marcos@email.com" => 65500
       }
 
       assert Stone.split_the_bill(shopping_list, emails) == expected_response
