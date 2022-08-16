@@ -1,0 +1,2 @@
+defmodule Stone do
+end
