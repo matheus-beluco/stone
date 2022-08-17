@@ -32,14 +32,32 @@ defmodule StoneTest do
       emails = ["john@email.com", "lee@email.com", "helena@email.com"]
 
       expected_response = %{
-        "john@email.com" => 3_400,
-        "helena@email.com" => 3_300,
-        "lee@email.com" => 3_300
+        "john@email.com" => 3_334,
+        "helena@email.com" => 3_333,
+        "lee@email.com" => 3_333
       }
 
       {:ok, response} = Stone.split_the_bill(shopping_list, emails)
       assert response == expected_response
       assert response |> Map.values() |> Enum.sum() == 10_000
+    end
+
+    test "returns the value that each email must pay when the bill is 1 cent" do
+      shopping_list = [
+        %{item: "celular", amount: 1, unit_price: 0.01},
+      ]
+
+      emails = ["john@email.com", "lee@email.com", "helena@email.com"]
+
+      expected_response = %{
+        "john@email.com" => 1,
+        "helena@email.com" => 0,
+        "lee@email.com" => 0,
+      }
+
+      {:ok, response} = Stone.split_the_bill(shopping_list, emails)
+      assert response == expected_response
+      assert response |> Map.values() |> Enum.sum() == 1
     end
 
     test "returns error if shopping list is empty" do
