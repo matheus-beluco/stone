@@ -48,5 +48,12 @@ defmodule StoneTest do
 
       assert Stone.split_the_bill(shopping_list, emails) == {:error, "invalid params"}
     end
+
+    test "returns error if exists duplicated email" do
+      shopping_list = [%{item: "celular", amount: 10, unit_price: 200}]
+      emails = ["john@email.com", "john@email.com"]
+
+      assert Stone.split_the_bill(shopping_list, emails) == {:error, "invalid params"}
+    end
   end
 end
