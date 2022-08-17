@@ -12,7 +12,7 @@ defmodule Stone do
   def split_the_bill(shopping_list, emails) do
     with {:ok, shopping_list} <- validate_shopping_list(shopping_list),
          {:ok, emails} <- validate_emails(emails) do
-      bill = calculates_bill(shopping_list)
+      bill = calculates_bill_in_cents(shopping_list)
       payers = Enum.count(emails)
 
       rest = rem(bill, payers)
@@ -20,7 +20,7 @@ defmodule Stone do
 
       {value_per_payer, _} =
         Enum.map_reduce(1..payers, rest, fn _, acc ->
-          {(division + acc) * 100, 0}
+          {(division + acc), 0}
         end)
 
       split_bill = emails |> Enum.zip(value_per_payer) |> Map.new()
@@ -29,10 +29,10 @@ defmodule Stone do
     end
   end
 
-  defp calculates_bill(shopping_list) do
+  defp calculates_bill_in_cents(shopping_list) do
     Enum.reduce(shopping_list, 0, fn item, acc ->
       item[:amount] * item[:unit_price] + acc
-    end)
+    end) * 100 |> trunc()
   end
 
   defp validate_shopping_list(shopping_list) do
