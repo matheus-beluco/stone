@@ -12,13 +12,15 @@ defmodule StoneTest do
       emails = ["john@email.com", "lee@email.com", "helena@email.com", "marcos@email.com"]
 
       expected_response = %{
-        "john@email.com" => 65500,
-        "lee@email.com" => 65500,
-        "helena@email.com" => 65500,
-        "marcos@email.com" => 65500
+        "john@email.com" => 65_500,
+        "lee@email.com" => 65_500,
+        "helena@email.com" => 65_500,
+        "marcos@email.com" => 65_500
       }
 
-      assert Stone.split_the_bill(shopping_list, emails) == {:ok, expected_response}
+      {:ok, response} = Stone.split_the_bill(shopping_list, emails)
+      assert response == expected_response
+      assert response |> Map.values() |> Enum.sum() == 262_000
     end
 
     test "returns the value that each email must pay when the division is not exact" do
@@ -30,12 +32,14 @@ defmodule StoneTest do
       emails = ["john@email.com", "lee@email.com", "helena@email.com"]
 
       expected_response = %{
-        "john@email.com" => 3300,
-        "lee@email.com" => 3300,
-        "helena@email.com" => 3400,
+        "john@email.com" => 3_400,
+        "helena@email.com" => 3_300,
+        "lee@email.com" => 3_300
       }
 
-      assert Stone.split_the_bill(shopping_list, emails) == {:ok, expected_response}
+      {:ok, response} = Stone.split_the_bill(shopping_list, emails)
+      assert response == expected_response
+      assert response |> Map.values() |> Enum.sum() == 10_000
     end
 
     test "returns error if shopping list is empty" do

@@ -14,9 +14,16 @@ defmodule Stone do
          {:ok, emails} <- validate_emails(emails) do
       bill = calculates_bill(shopping_list)
       payers = Enum.count(emails)
-      value_per_payer = div(bill, payers) * 100
-      values = Enum.map(1..payers, fn _ -> value_per_payer end)
-      split_bill = emails |> Enum.zip(values) |> Map.new()
+
+      rest = rem(bill, payers)
+      division = div(bill, payers)
+
+      {value_per_payer, _} =
+        Enum.map_reduce(1..payers, rest, fn _, acc ->
+          {(division + acc) * 100, 0}
+        end)
+
+      split_bill = emails |> Enum.zip(value_per_payer) |> Map.new()
 
       {:ok, split_bill}
     end
