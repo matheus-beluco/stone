@@ -2,7 +2,7 @@ defmodule StoneTest do
   use ExUnit.Case
 
   describe "split_the_bill/2" do
-    test "returns the value that each email must pay when the division is exact" do
+    test "returns the splited bill when the division is exact" do
       shopping_list = [
         %{item: "celular", amount: 10, unit_price: 200},
         %{item: "tv", amount: 5, unit_price: 100},
@@ -23,7 +23,7 @@ defmodule StoneTest do
       assert response |> Map.values() |> Enum.sum() == 262_000
     end
 
-    test "returns the value that each email must pay when the division is not exact" do
+    test "returns the splited bill when only one person will pay more" do
       shopping_list = [
         %{item: "celular", amount: 1, unit_price: 50},
         %{item: "tv", amount: 2, unit_price: 25}
@@ -42,9 +42,28 @@ defmodule StoneTest do
       assert response |> Map.values() |> Enum.sum() == 10_000
     end
 
-    test "returns the value that each email must pay when the bill is 1 cent" do
+    test "returns the splited bill when more than one person will pay more" do
       shopping_list = [
-        %{item: "celular", amount: 1, unit_price: 0.01},
+        %{item: "celular", amount: 2, unit_price: 500},
+        %{item: "tv", amount: 2, unit_price: 50}
+      ]
+
+      emails = ["john@email.com", "lee@email.com", "helena@email.com"]
+
+      expected_response = %{
+        "john@email.com" => 36667,
+        "helena@email.com" => 36667,
+        "lee@email.com" => 36666
+      }
+
+      {:ok, response} = Stone.split_the_bill(shopping_list, emails)
+      assert response == expected_response
+      assert response |> Map.values() |> Enum.sum() == 1_100
+    end
+
+    test "returns the splited bill when the bill is 1 cent" do
+      shopping_list = [
+        %{item: "celular", amount: 1, unit_price: 0.01}
       ]
 
       emails = ["john@email.com", "lee@email.com", "helena@email.com"]
@@ -52,7 +71,7 @@ defmodule StoneTest do
       expected_response = %{
         "john@email.com" => 1,
         "helena@email.com" => 0,
-        "lee@email.com" => 0,
+        "lee@email.com" => 0
       }
 
       {:ok, response} = Stone.split_the_bill(shopping_list, emails)
