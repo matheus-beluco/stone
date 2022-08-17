@@ -113,5 +113,12 @@ defmodule StoneTest do
 
       assert Stone.split_the_bill(shopping_list, emails) == {:error, "invalid params"}
     end
+
+    test "returns error if bill is zero" do
+      shopping_list = [%{item: "celular", amount: 10, unit_price: 0}]
+      emails = ["john@email.com", "lee@email.com"]
+
+      assert Stone.split_the_bill(shopping_list, emails) == {:error, "invalid params"}
+    end
   end
 end
