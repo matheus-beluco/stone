@@ -33,8 +33,8 @@ defmodule StoneTest do
 
       expected_response = %{
         "john@email.com" => 3_334,
-        "helena@email.com" => 3_333,
-        "lee@email.com" => 3_333
+        "lee@email.com" => 3_333,
+        "helena@email.com" => 3_333
       }
 
       {:ok, response} = Stone.split_the_bill(shopping_list, emails)
@@ -44,21 +44,21 @@ defmodule StoneTest do
 
     test "returns the splited bill when more than one person will pay more" do
       shopping_list = [
-        %{item: "celular", amount: 2, unit_price: 500},
-        %{item: "tv", amount: 2, unit_price: 50}
+        %{item: "celular", amount: 2, unit_price: 50},
+        %{item: "tv", amount: 2, unit_price: 5}
       ]
 
       emails = ["john@email.com", "lee@email.com", "helena@email.com"]
 
       expected_response = %{
-        "john@email.com" => 36667,
-        "helena@email.com" => 36667,
-        "lee@email.com" => 36666
+        "john@email.com" => 3667,
+        "lee@email.com" => 3667,
+        "helena@email.com" => 3666
       }
 
       {:ok, response} = Stone.split_the_bill(shopping_list, emails)
       assert response == expected_response
-      assert response |> Map.values() |> Enum.sum() == 1_100
+      assert response |> Map.values() |> Enum.sum() == 11_000
     end
 
     test "returns the splited bill when the bill is 1 cent" do
@@ -70,8 +70,8 @@ defmodule StoneTest do
 
       expected_response = %{
         "john@email.com" => 1,
-        "helena@email.com" => 0,
-        "lee@email.com" => 0
+        "lee@email.com" => 0,
+        "helena@email.com" => 0
       }
 
       {:ok, response} = Stone.split_the_bill(shopping_list, emails)
