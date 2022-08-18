@@ -83,42 +83,43 @@ defmodule StoneTest do
       shopping_list = []
       emails = ["john@email.com", "lee@email.com", "helena@email.com", "marcos@email.com"]
 
-      assert Stone.split_the_bill(shopping_list, emails) == {:error, "invalid params"}
+      assert Stone.split_the_bill(shopping_list, emails) == {:error, "params can't be empty"}
     end
 
     test "returns error if emails is empty" do
       shopping_list = [%{item: "celular", amount: 10, unit_price: 200}]
       emails = []
 
-      assert Stone.split_the_bill(shopping_list, emails) == {:error, "invalid params"}
+      assert Stone.split_the_bill(shopping_list, emails) == {:error, "params can't be empty"}
     end
 
     test "returns error if unit_price is negative" do
       shopping_list = [%{item: "celular", amount: 10, unit_price: -1}]
       emails = ["john@email.com"]
 
-      assert Stone.split_the_bill(shopping_list, emails) == {:error, "invalid params"}
+      assert Stone.split_the_bill(shopping_list, emails) == {:error, "values can't be negative"}
     end
 
     test "returns error if amount is negative" do
       shopping_list = [%{item: "celular", amount: -1, unit_price: 10}]
       emails = ["john@email.com"]
 
-      assert Stone.split_the_bill(shopping_list, emails) == {:error, "invalid params"}
+      assert Stone.split_the_bill(shopping_list, emails) == {:error, "values can't be negative"}
     end
 
     test "returns error if exists duplicated email" do
       shopping_list = [%{item: "celular", amount: 10, unit_price: 200}]
       emails = ["john@email.com", "john@email.com"]
 
-      assert Stone.split_the_bill(shopping_list, emails) == {:error, "invalid params"}
+      assert Stone.split_the_bill(shopping_list, emails) == {:error, "emails can't be duplicated"}
     end
 
     test "returns error if the bill is zero" do
       shopping_list = [%{item: "celular", amount: 10, unit_price: 0}]
       emails = ["john@email.com", "lee@email.com"]
 
-      assert Stone.split_the_bill(shopping_list, emails) == {:error, "invalid params"}
+      assert Stone.split_the_bill(shopping_list, emails) ==
+               {:error, "the bill must be greater than zero"}
     end
   end
 end
