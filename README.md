@@ -5,7 +5,7 @@
 The challenge contains two parts:
 
 **1) SQL** 
-* Answers in [test/stone_test.exs](test/stone_test.exs)
+* Answers in [sql_answers.sql](sql_answers.sql)
 
 **2) Programming**
 * Resolution in [lib/stone.ex](lib/stone.ex)
